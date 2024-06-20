@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/screenMatch.iml" filepath="$PROJECT_DIR$/.idea/screenMatch.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/CursoSpring.iml" filepath="$PROJECT_DIR$/.idea/CursoSpring.iml" />
+      <module fileurl="file://$PROJECT_DIR$/screenMatch/screenMatch.iml" filepath="$PROJECT_DIR$/screenMatch/screenMatch.iml" />
     </modules>
   </component>
 </project>
