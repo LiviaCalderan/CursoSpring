@@ -2,6 +2,8 @@ package br.com.alura.screenMatch.model;
 
 import br.com.alura.screenMatch.service.traducao.CunsultaMyMemory;
 import jakarta.persistence.*;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +28,8 @@ public class Serie {
     private String poster;
     private String sinopse;
 
-    @Transient
+    @OneToMany(mappedBy = "serie", cascade = CascadeType.ALL)
+    @Fetch(FetchMode.JOIN) //Carregar a coleção de forma eager
     private List<Episodio> episodios = new ArrayList<>();
 
 
@@ -56,6 +59,7 @@ public class Serie {
     }
 
     public void setEpisodios(List<Episodio> episodios) {
+        episodios.forEach(e -> e.setSerie(this));
         this.episodios = episodios;
     }
 
@@ -124,6 +128,7 @@ public class Serie {
                 ", avaliacao=" + avaliacao +
                 ", atores=" + atores +
                 ", poster='" + poster + '\'' +
-                ", sinopse='" + sinopse + '\'';
+                ", sinopse='" + sinopse + '\'' +
+                ", episodios='" + episodios + '\'';
     }
 }
