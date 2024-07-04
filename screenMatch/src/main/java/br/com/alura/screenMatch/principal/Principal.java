@@ -31,12 +31,15 @@ public class Principal {
 
     public void exibeMenu() {
         var opcao = -1;
-        while(opcao != 0) {
+        while (opcao != 0) {
             var menu = """
                     1 - Buscar séries
                     2 - Buscar episódios
-                    3 - Listar séries Buscadas
-                    
+                    3 - Listar séries buscadas
+                    4 - Buscar série por titulo
+                    5 - Buscar series por ator
+                    6 - Top 5 séries
+                                        
                     0 - Sair
                     """;
 
@@ -47,23 +50,33 @@ public class Principal {
             leitura.nextLine();
 
             switch (opcao) {
-                    case 1:
-                        buscarSerieWeb();
-                        break;
-                    case 2:
-                        buscarEpisodioPorSerie();
-                        break;
-                    case 3:
-                        listarSeriesBuscadas();
-                        break;
-                    case 0:
-                        System.out.println("Saindo...");
-                        break;
-                    default:
-                        System.out.println("Opção inválida");
+                case 1:
+                    buscarSerieWeb();
+                    break;
+                case 2:
+                    buscarEpisodioPorSerie();
+                    break;
+                case 3:
+                    listarSeriesBuscadas();
+                    break;
+                case 4:
+                    buscarSeriePorTitulo();
+                    break;
+                case 5:
+                    buscarSeriePorAtor();
+                    break;
+                case 6:
+                    buscarTop5Seires();
+                    break;
+                case 0:
+                    System.out.println("Saindo...");
+                    break;
+                default:
+                    System.out.println("Opção inválida");
             }
         }
     }
+
 
     private void buscarSerieWeb() {
         DadosSerie dados = getDadosSerie();
@@ -81,17 +94,15 @@ public class Principal {
         return dados;
     }
 
-    private void buscarEpisodioPorSerie(){
+    private void buscarEpisodioPorSerie() {
 
         listarSeriesBuscadas();
         System.out.println("Escolha uma série pelo nome: ");
         var nomeSerie = leitura.next();
 
-        Optional<Serie> serie = series.stream()
-                .filter(s -> s.getTitulo().toLowerCase().contains(nomeSerie.toLowerCase()))
-                .findFirst();
+        Optional<Serie> serie = repositorio.findByTituloContainingIgnoreCase(nomeSerie);
 
-        if(serie.isPresent()) {
+        if (serie.isPresent()) {
 
             var serieEncontrada = serie.get();
             List<DadosTemporada> temporadas = new ArrayList<>();
@@ -121,5 +132,39 @@ public class Principal {
         series.stream()
                 .sorted(Comparator.comparing(Serie::getGenero))
                 .forEach(System.out::println);
+    }
+
+    private void buscarSeriePorTitulo() {
+        System.out.println("Digite o nome da série para busca: ");
+        var nomeSerie = leitura.nextLine();
+        Optional<Serie> serieBuscada = repositorio.findByTituloContainingIgnoreCase(nomeSerie);
+
+        if (serieBuscada.isPresent()) {
+            System.out.println("Dados da série: " + serieBuscada.get());
+
+        } else {
+            System.out.println("Serie não encontrada!");
+        }
+
+    }
+
+    private void buscarSeriePorAtor() {
+        System.out.println("Digite o nome do ator para buscar: ");
+        var nomeAtor = leitura.nextLine();
+        System.out.println("Avaliações a partir de qual valor? ");
+        var avaliacao = leitura.nextDouble();
+
+        List<Serie> seriesEncontradas = repositorio.findByAtoresContainingIgnoreCaseAndAvaliacaoGreaterThanEqual(nomeAtor, avaliacao);
+        System.out.println("Series em que " + nomeAtor + " trabalhou: ");
+        seriesEncontradas.forEach(s ->
+                System.out.println(s.getTitulo() + " | avaliação: " + s.getAvaliacao()));
+
+    }
+
+    private void buscarTop5Seires() {
+        List<Serie> seriesTop = repositorio.findTop5ByOrderByAvaliacaoDesc();
+        seriesTop.forEach(s ->
+                System.out.println(s.getTitulo()
+                        + " | avaliação: " + s.getAvaliacao()));
     }
 }
