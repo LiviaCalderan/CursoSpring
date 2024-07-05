@@ -190,7 +190,7 @@ public class Principal {
         var avaliacao = leitura.nextDouble();
 
         List<Serie> seriesPorTemporada = repositorio
-                .findByTotalTemporadasLessThanEqualAndAvaliacaoGreaterThanEqual(numeroDeTemporadas, avaliacao);
+                .seriesPorTemporadaEAvalicao(numeroDeTemporadas, avaliacao);
         seriesPorTemporada.forEach(s -> System.out.println(s.getTitulo() + " | avaliação: " + s.getAvaliacao()));
     }
 
