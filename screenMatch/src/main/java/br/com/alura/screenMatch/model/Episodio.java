@@ -74,7 +74,7 @@ public class Episodio {
         this.titulo = titulo;
     }
 
-    public Integer getNumero() {
+    public Integer getNumeroEpisodio() {
         return numeroEpisodio;
     }
 

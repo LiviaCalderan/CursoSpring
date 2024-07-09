@@ -217,7 +217,7 @@ public class Principal {
                 System.out.printf("Série: %s | Temporada %s | Episódio %s - %s\n",
                         e.getSerie().getTitulo(),
                         e.getTemporada(),
-                        e.getNumero(),
+                        e.getNumeroEpisodio(),
                         e.getTitulo()));
     }
 
@@ -230,7 +230,7 @@ public class Principal {
                     System.out.printf("Série: %s | Temporada %s | Episódio %s - %s | Avaliação: %s\n",
                             e.getSerie().getTitulo(),
                             e.getTemporada(),
-                            e.getNumero(),
+                            e.getNumeroEpisodio(),
                             e.getTitulo(),
                             e.getAvaliacao()));
         }
